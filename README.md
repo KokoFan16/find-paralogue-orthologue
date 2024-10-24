@@ -1,6 +1,6 @@
 # Homology Data Fetcher
 
-This script fetches homology information for a list of gene IDs from the Ensembl REST API. The input gene IDs are read from an Excel file, and the output is written to a CSV file. The script can be customized to fetch various types of homology information and sequences (e.g., paralogues, protein sequences).
+This script fetches homology information for a list of gene IDs from the Ensembl REST API. The input gene IDs are read from an Excel file, and the output is written to a CSV file. The script can be customized to fetch various types of homology information and sequences (e.g., orthologue, paralogues, protein sequences).
 
 ## Prerequisites
 
@@ -24,7 +24,7 @@ The script takes several command-line arguments to customize the input, output, 
 - **file** (required): Path to the input Excel file that contains a list of gene IDs.
 - **species** (required): Target species for the homology search (e.g., "human", "mouse").
 - **out** (required): Path to the output file where the CSV results will be saved.
-- **--type** (optional): Type of homology to return (default: `all`). You can specify types like `paralogues` or `projections`.
+- **--type** (optional): Type of homology to return (default: `all`). You can specify types like `orthologue`, `paralogues` or `projections`.
 - **--sequence** (optional): Type of sequence to retrieve (default: `protein`). Other options include `cdna` or `none`.
 
 ### Input File
