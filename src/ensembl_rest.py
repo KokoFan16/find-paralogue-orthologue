@@ -80,7 +80,7 @@ def fetch_data_from_ensembl(dfs, tspecies, stype, sequence):
     :return: list - List of results containing homology count and homolog gene IDs
     """
     genes = dfs['Sheet1']['gene_ids']  # Get gene IDs from the Excel sheet
-    server = "https://grch37.rest.ensembl.org"  # Base URL for the Ensembl REST API
+    server = "https://rest.ensembl.org"  # Base URL for the Ensembl REST API
 
     result = []  # List to store results
     c = 0  # Counter for processed genes
