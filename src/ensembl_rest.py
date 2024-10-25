@@ -36,7 +36,7 @@ def write_excel_file(dfs, result, stype, out_file):
     return 0
 
 
-def process_result_data(decoded, tspecies):
+def process_result_data(decoded, species, tspecies):
     """
     Process and extract relevant homology data from the API response.
     
@@ -69,7 +69,7 @@ def process_result_data(decoded, tspecies):
 
 
 
-def fetch_data_from_ensembl(dfs, tspecies, stype, sequence):
+def fetch_data_from_ensembl(dfs, species, tspecies, stype, sequence):
     """
     Fetch homology data for each gene in the input Excel file using the Ensembl REST API.
     
@@ -87,8 +87,11 @@ def fetch_data_from_ensembl(dfs, tspecies, stype, sequence):
     for gene in genes:
         if isinstance(gene, str):  # Ensure the gene ID is a string
             ext = "/homology/id/"  # API endpoint for homology
-            ext += tspecies + "/" + gene + "?type=" + stype + ";sequence=" + sequence  # Construct the API URL
+            ext += species + "/" + gene + "?type=" + stype + ";sequence=" + sequence  # Construct the API URL
 
+            if (tspecies):
+                ext += ";target_species=" + tspecies
+            
             # Make the API request
             try:
                 r = requests.get(server + ext, headers={"Content-Type": "application/json"})
@@ -107,7 +110,7 @@ def fetch_data_from_ensembl(dfs, tspecies, stype, sequence):
                 # If the API request is successful, process the result data
                 print(c, gene, "is processed successfully")
                 data = r.json()  # Decode the JSON response
-                target_genes = process_result_data(data, tspecies)  # Process the response to get homolog gene info
+                target_genes = process_result_data(data, species, tspecies)  # Process the response to get homolog gene info
                 result.append(target_genes)  # Add the result to the list
 
             c += 1  # Increment the counter for processed genes
@@ -122,16 +125,19 @@ def main():
     parser.add_argument("file", help="Path to the Excel file containing gene IDs.")
     
     # Required argument: name of target species of the result genes
-    parser.add_argument("species", help="Target species of the result genes.")
+    parser.add_argument("species", help="Species of the input genes.")
 
     # Required argument: the name of output Excel file path
     parser.add_argument("out", help="Path to the output Excel file.")
 
-    # Optional argument: the type of homology to return from this call (paralogues, projections). 
-    parser.add_argument("--type", default="all", help="Type of homology.")
+    # Optional argument: the type of homology to return from this call (orthologs, paralogues, projections). 
+    parser.add_argument("--type", default="orthologs", help="Type of homology.")
+
+    # Optional argument: the type of homology to return from this call (orthologs, paralogues, projections). 
+    parser.add_argument("--tspecies", help="Target species of the output genes.")
 
     # Optional argument: the type of sequence to bring back (none, cdna, protein). 
-    parser.add_argument("--sequence", default="protein", help="Type of homology.")
+    parser.add_argument("--sequence", default="none", help="Type of homology.")
     
     # Parse command-line arguments
     args = parser.parse_args()
@@ -140,7 +146,7 @@ def main():
     gene_data = load_excel_file(args.file)
 
     # Fetch the required data from ensembl
-    result = fetch_data_from_ensembl(gene_data, args.species, args.type, args.sequence)
+    result = fetch_data_from_ensembl(gene_data, args.species, args.tspecies, args.type, args.sequence)
 
     # Write the results to the output file
     write_excel_file(gene_data, result, args.type, args.out)
