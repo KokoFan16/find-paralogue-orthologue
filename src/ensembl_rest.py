@@ -14,6 +14,8 @@ def load_excel_file(file_name):
     :return: dict - Dictionary where the key is the sheet name and the value is the corresponding DataFrame
     """
 
+    xls = pd.ExcelFile(file_name)
+
     dfs = pd.read_excel(file_name, sheet_name=None)
     return dfs
 
@@ -130,10 +132,10 @@ def main():
     # Required argument: the name of output Excel file path
     parser.add_argument("out", help="Path to the output Excel file.")
 
-    # Optional argument: the type of homology to return from this call (orthologs, paralogues, projections). 
-    parser.add_argument("--type", default="orthologs", help="Type of homology.")
+    # Optional argument: the type of homology to return from this call Enum(orthologues, paralogues, projections, all). 
+    parser.add_argument("--type", default="orthologues", help="Type of homology.")
 
-    # Optional argument: the type of homology to return from this call (orthologs, paralogues, projections). 
+    # Optional argument: target species of the output genes. 
     parser.add_argument("--tspecies", help="Target species of the output genes.")
 
     # Optional argument: the type of sequence to bring back (none, cdna, protein). 
