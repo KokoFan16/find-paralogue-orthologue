@@ -22,10 +22,11 @@ The `openpyxl` library is needed to read and write Excel files.
 The script takes several command-line arguments to customize the input, output, and the type of data fetched from the Ensembl API. Here is a breakdown of the arguments:
 
 - **file** (required): Path to the input Excel file that contains a list of gene IDs.
-- **species** (required): Target species for the homology search (e.g., "human", "mouse").
+- **species** (required): Species for the homology search (e.g., "human", "mouse").
 - **out** (required): Path to the output file where the CSV results will be saved.
-- **--type** (optional): Type of homology to return (default: `all`). You can specify types like `orthologue`, `paralogues` or `projections`.
-- **--sequence** (optional): Type of sequence to retrieve (default: `protein`). Other options include `cdna` or `none`.
+- **--tspecies** (optional): Species of homology to return. You can specify types like `mus_musculus` or `homo_sapiens`.
+- **--type** (optional): Type of homology to return (default: `orthologs`). You can specify types like `orthologue`, `paralogues` or `projections`.
+- **--sequence** (optional): Type of sequence to retrieve (default: `none`). Other options include `cdna` or `none`.
 
 ### Input File
 
